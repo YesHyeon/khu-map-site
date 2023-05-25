@@ -19,7 +19,7 @@ const Start = () => {
     <MainContainer>
       <LogoImage src={khuLogo} />
       <NextButton>
-        <ButtonText onClick={handleNextClick}>시작하기</ButtonText>
+        <ButtonText onClick={handleNextClick}>하이</ButtonText>
       </NextButton>
     </MainContainer>
   );
