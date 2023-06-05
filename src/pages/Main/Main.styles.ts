@@ -6,7 +6,6 @@ export const MainContainer = styled.div`
   width: 100%;
   max-width: 412px;
   height: 100vh;
-  background-color: ${theme.colors.burgundy};
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -33,4 +32,48 @@ export const Feedback = styled.div`
   font-size: 13px;
   text-decoration: underline;
   color: white;
+`;
+
+export const SelectorBoxWrapper = styled.div`
+  width: 100%
+  padding-top: 37px;
+  padding-bottom: 17px;
+  background: rgba(137, 137, 137, 0.8);
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  
+`;
+
+export const ParticipantsTitle = styled.div`
+  color: grey
+  margin-bottom: 8px;
+`;
+
+export const BuildingWraaper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  white-space: normal;
+  justify-content: center;
+  flex-basis: 100%;
+  padding-top: 20px;
+`;
+
+export const Building = styled.div`
+  width: 110px;
+  height: 33px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background-color: white;
+
+  @media screen and (max-width: 412px) {
+    width: 64px;
+  }
 `;

@@ -1,5 +1,13 @@
 import React from 'react';
-import { MainContainer, Header, Feedback } from './Main.styles';
+import {
+  MainContainer,
+  Header,
+  Feedback,
+  SelectorBoxWrapper,
+  Building,
+  ParticipantsTitle,
+  BuildingWraaper,
+} from './Main.styles';
 
 import { GoogleMap, useJsApiLoader, Polygon } from '@react-google-maps/api';
 
@@ -58,6 +66,24 @@ const Main = () => {
   // });
   // infoWindow = new google.maps.InfoWindow();
 
+  const getParticipant = () => {
+    const result: JSX.Element[] = [];
+    const building = [
+      '공과대학',
+      '전자정보대학',
+      '외국어대학',
+      '체육대학',
+      '예술디자인대학',
+      '생명과학대학',
+    ];
+
+    for (let i = 0; i < building.length; i++) {
+      result.push(<Building>{building[i]}</Building>);
+    }
+
+    return result;
+  };
+
   const locationButton = document.createElement('button');
 
   locationButton.textContent = 'Pan to Current Location';
@@ -77,8 +103,14 @@ const Main = () => {
 
   return isLoaded ? (
     <MainContainer>
-      <Header>경국맵</Header>
-      <Feedback>피드백</Feedback>
+      <Header>
+        경국맵
+        <Feedback>피드백</Feedback>
+      </Header>
+      <SelectorBoxWrapper>
+        <BuildingWraaper>{getParticipant()}</BuildingWraaper>
+      </SelectorBoxWrapper>
+
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
