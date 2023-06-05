@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import theme from '../styles/theme';
+import theme from '../../styles/theme';
 
 export const MainContainer = styled.div`
   position: relative;
@@ -18,6 +18,18 @@ export const LogoImage = styled.img`
   margin: 0 auto;
 `;
 
+export const Introduce = styled.div`
+  position: absolute;
+  width: 80%;
+  top: 400px;
+  height: 250px;
+  margin: 0 auto;
+  font-size: 20px;
+  left: 0px;
+  right: 0px;
+  color: white;
+`;
+
 export const NextButton = styled.div`
   position: absolute;
   width: 330px;
@@ -29,6 +41,9 @@ export const NextButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export const ButtonText = styled.text`
