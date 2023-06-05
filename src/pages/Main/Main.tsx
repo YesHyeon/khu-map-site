@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   MainContainer,
   Header,
@@ -15,14 +15,37 @@ import useGeolocation from 'react-hook-geolocation';
 
 const Main = () => {
   const geolocation = useGeolocation();
-  const [map, setMap] = React.useState(null);
+  const [map, setMap] = useState(null);
+  const [mapLocation, setMapLocation] = useState({ lat: 0, lng: 0 });
 
   let center = {
     lat: 0,
     lng: 0,
   };
 
-  console.log(geolocation);
+  // function getLocation() {
+  //   if (navigator.geolocation) {
+  //     // GPS를 지원하면
+  //     navigator.geolocation.getCurrentPosition(
+  //       function (position) {
+  //         alert(position.coords.latitude + ' ' + position.coords.longitude);
+  //       },
+  //       function (error) {
+  //         alert(error);
+  //       },
+  //       {
+  //         enableHighAccuracy: false,
+  //         maximumAge: 0,
+  //         timeout: Infinity,
+  //       }
+  //     );
+  //   } else {
+  //     alert('GPS를 지원하지 않습니다');
+  //   }
+  // }
+  // getLocation();
+
+  // console.log(geolocation);
 
   const containerStyle = {
     width: '100%',
