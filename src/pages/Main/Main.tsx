@@ -10,6 +10,7 @@ import {
   FloorButtonWrapper,
   FloorButton,
   GoogleMapWrapper,
+  CurrentButton,
 } from './Main.styles';
 
 import {
@@ -31,6 +32,7 @@ const Main = () => {
   const [mapLocation, setMapLocation] = useState({ lat: 0, lng: 0 });
   const [currentBuilding, setCurrentBuildingn] = useState<string>('공과대학');
   const [currentMarker, setCurrentMarker] = useState<any>([{ lat: 0, lng: 0 }]);
+  const [a, setA] = useState<any>([{ lat: 0, lng: 0 }]);
 
   const [infoIndex, setInfoIndex] = useState([
     false,
@@ -171,29 +173,37 @@ const Main = () => {
     },
   };
 
-  // function getLocation() {
-  //   if (navigator.geolocation) {
-  //     // GPS를 지원하면
-  //     navigator.geolocation.getCurrentPosition(
-  //       function (position) {
-  //         alert(position.coords.latitude + ' ' + position.coords.longitude);
-  //       },
-  //       function (error) {
-  //         alert(error);
-  //       },
-  //       {
-  //         enableHighAccuracy: false,
-  //         maximumAge: 0,
-  //         timeout: Infinity,
-  //       }
-  //     );
-  //   } else {
-  //     alert('GPS를 지원하지 않습니다');
-  //   }
-  // }
-  // getLocation();
+  function getLocation() {
+    const getCurrentPosBtn = () => {
+      navigator.geolocation.getCurrentPosition(
+        getPosSuccess,
+        () => alert('위치 정보를 가져오는데 실패했습니다.'),
+        {
+          enableHighAccuracy: true,
+          maximumAge: 30000,
+          timeout: 27000,
+        }
+      );
+    };
 
-  // console.log(geolocation);
+    const getPosSuccess = (pos: GeolocationPosition) => {
+      // 현재 위치(위도, 경도) 가져온다.
+      alert(
+        pos.coords.latitude // 경도
+      );
+      // 지도를 이동 시킨다.
+      // map.panTo(currentPos);
+
+      // 기존 마커를 제거하고 새로운 마커를 넣는다.
+      // marker.setMap(null);
+      // marker.setPosition(currentPos);
+      // marker.setMap(map);
+    };
+
+    getCurrentPosBtn();
+  }
+
+  console.log('Geo', geolocation.latitude);
 
   const containerStyle = {
     width: '100%',
@@ -288,8 +298,6 @@ const Main = () => {
     return result;
   };
 
-  console.log('currentMarker', currentMarker);
-
   const getMarker = () => {
     const result: JSX.Element[] = [];
 
@@ -370,22 +378,27 @@ const Main = () => {
     [currentMarker, floorButton]
   );
 
+  const handleCurrentLocationClick = () => {};
+
   const locationButton = document.createElement('button');
 
   locationButton.textContent = 'Pan to Current Location';
   locationButton.classList.add('custom-map-control-button');
 
-  const onLoad = React.useCallback(function callback(map: any) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+  // const onLoad = React.useCallback(function callback(map: any) {
+  //   // This is just an example of getting and using the map instance!!! don't just blindly copy!
+  //   const bounds = new window.google.maps.LatLngBounds(center);
+  //   map.fitBounds(bounds);
+  //   setMap(map);
 
-    setMapLocation(map);
-  }, []);
+  //   setMapLocation(map);
+  // }, []);
 
   const onUnmount = React.useCallback(function callback(map: any) {
     setMap(null);
   }, []);
+
+  console.log('map', map);
 
   return isLoaded ? (
     <MainContainer>
@@ -400,13 +413,12 @@ const Main = () => {
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={mapLocation}
-          onZoomChanged={() => {
-            console.log('dd');
-          }}
-          zoom={12}
-          onLoad={onLoad}
+          onZoomChanged={() => {}}
+          zoom={18}
+          // onLoad={onLoad}
           onUnmount={onUnmount}
         >
+          <Marker position={a}></Marker>
           {currentMarker.map((item: any, index: any) => {
             return (
               <Marker
@@ -481,6 +493,7 @@ const Main = () => {
           3
         </FloorButton>
       </FloorButtonWrapper>
+      <CurrentButton onClick={() => getLocation()}>위치</CurrentButton>
     </MainContainer>
   ) : (
     <></>

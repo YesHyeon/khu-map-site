@@ -102,6 +102,23 @@ export const FloorButton = styled.div<{ active: boolean }>`
   cursor: pointer;
 `;
 
+export const CurrentButton = styled.div`
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border: 3px solid ${theme.colors.burgundy};
+  border-radius: 50px;
+  position: absolute;
+  bottom: 200px;
+  right: 3px;
+  z-index: 100;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
 export const GoogleMapWrapper = styled.div`
   width: 100%;
   height: 100%;
