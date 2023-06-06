@@ -25,7 +25,7 @@ export const Header = styled.div`
 
 export const Feedback = styled.div`
   position: absolute;
-  top: 23px;
+  top: 10px;
   right: 20px;
   width: 40px;
   height: 20px;
@@ -60,7 +60,7 @@ export const BuildingWraaper = styled.div`
   padding-top: 20px;
 `;
 
-export const Building = styled.div`
+export const Building = styled.div<{ active: boolean }>`
   width: 105px;
   height: 33px;
   margin-right: 10px;
@@ -71,7 +71,7 @@ export const Building = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  background-color: white;
+  background-color: ${(props: any) => (props.active ? 'pink' : 'white')};
 
   @media screen and (max-width: 412px) {
     width: 103px;
@@ -118,6 +118,30 @@ export const CurrentButton = styled.img`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+`;
+
+export const FloorText = styled.div`
+  width: 100%;
+  height: 10px;
+  background-color: 'white'
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  padding-bottom: 6px;
+  
+`;
+
+export const FixText = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
 `;
 
 export const GoogleMapWrapper = styled.div`

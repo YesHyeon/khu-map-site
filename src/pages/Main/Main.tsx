@@ -11,6 +11,8 @@ import {
   FloorButton,
   GoogleMapWrapper,
   CurrentButton,
+  FloorText,
+  FixText,
 } from './Main.styles';
 
 import {
@@ -36,6 +38,17 @@ const Main = () => {
   const [a, setA] = useState<any>([{ lat: 0, lng: 0 }]);
 
   const [infoIndex, setInfoIndex] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  const [buildingIndex, setBuildingIndex] = useState([
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -216,7 +229,7 @@ const Main = () => {
   }
 
   const handleBuildingClick = useCallback(
-    (text: string) => {
+    (text: string, index: number) => {
       console.log(text);
       if (text === '공과대학') {
         setCurrentBuildingn('공과대학');
@@ -238,6 +251,12 @@ const Main = () => {
         setCurrentBuildingn('생명과학대학');
         setMapLocation(testData['생명과학대학'].location);
       }
+
+      setBuildingIndex((prev) =>
+        prev.map((v, i) => {
+          return index === i ? !v : false;
+        })
+      );
     },
     [mapLocation]
   );
@@ -287,7 +306,10 @@ const Main = () => {
 
     for (let i = 0; i < building.length; i++) {
       result.push(
-        <Building onClick={() => handleBuildingClick(building[i])}>
+        <Building
+          active={buildingIndex[i]}
+          onClick={() => handleBuildingClick(building[i], i)}
+        >
           {building[i]}
         </Building>
       );
@@ -375,8 +397,6 @@ const Main = () => {
     },
     [currentMarker, floorButton]
   );
-
-  const handleCurrentLocationClick = () => {};
 
   const locationButton = document.createElement('button');
 
@@ -466,30 +486,37 @@ const Main = () => {
         </GoogleMap>
       </GoogleMapWrapper>
       <FloorButtonWrapper>
-        <FloorButton
-          active={floorButton[0]}
-          onClick={() => {
-            handleFloorClick(0);
-          }}
-        >
-          1
-        </FloorButton>
-        <FloorButton
-          active={floorButton[1]}
-          onClick={() => {
-            handleFloorClick(1);
-          }}
-        >
-          2
-        </FloorButton>
-        <FloorButton
-          active={floorButton[2]}
-          onClick={() => {
-            handleFloorClick(2);
-          }}
-        >
-          3
-        </FloorButton>
+        {buildingIndex[0] == true ? (
+          <>
+            <FloorText>층수</FloorText>
+            <FloorButton
+              active={floorButton[0]}
+              onClick={() => {
+                handleFloorClick(0);
+              }}
+            >
+              1
+            </FloorButton>
+            <FloorButton
+              active={floorButton[1]}
+              onClick={() => {
+                handleFloorClick(1);
+              }}
+            >
+              2
+            </FloorButton>
+            <FloorButton
+              active={floorButton[2]}
+              onClick={() => {
+                handleFloorClick(2);
+              }}
+            >
+              3
+            </FloorButton>
+          </>
+        ) : (
+          <FixText>지원예정</FixText>
+        )}
       </FloorButtonWrapper>
       <CurrentButton src={locationImage} onClick={() => getLocation()} />
     </MainContainer>
