@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   MainContainer,
   Header,
@@ -14,9 +14,13 @@ import {
   useJsApiLoader,
   Polygon,
   Marker,
+  Circle,
+  InfoWindow,
 } from '@react-google-maps/api';
 
 import useGeolocation from 'react-hook-geolocation';
+
+import aa from '../../assets/icons/312.png';
 
 const Main = () => {
   const geolocation = useGeolocation();
@@ -64,9 +68,20 @@ const Main = () => {
     };
   }
 
-  const handleBuildingClick = () => {
-    setMapLocation(center);
-  };
+  const handleBuildingClick = useCallback(
+    (text: string) => {
+      console.log(text);
+      if (text == '공과대학') {
+        setMapLocation({
+          lat: 37.2463696,
+          lng: 127.0803839,
+        });
+      } else if ('전자정보대학') {
+        setMapLocation(center);
+      }
+    },
+    [mapLocation]
+  );
 
   const path = [
     {
@@ -111,7 +126,9 @@ const Main = () => {
 
     for (let i = 0; i < building.length; i++) {
       result.push(
-        <Building onClick={handleBuildingClick}>{building[i]}</Building>
+        <Building onClick={() => handleBuildingClick(building[i])}>
+          {building[i]}
+        </Building>
       );
     }
 
@@ -128,7 +145,7 @@ const Main = () => {
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
 
-    setMap(map);
+    setMapLocation(map);
   }, []);
 
   const onUnmount = React.useCallback(function callback(map: any) {
@@ -144,15 +161,35 @@ const Main = () => {
       <SelectorBoxWrapper>
         <BuildingWraaper>{getParticipant()}</BuildingWraaper>
       </SelectorBoxWrapper>
-
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
-        zoom={15}
+        center={mapLocation}
+        onZoomChanged={() => {
+          console.log('dd');
+        }}
+        zoom={12}
         onLoad={onLoad}
         onUnmount={onUnmount}
       >
-        <Marker position={mapLocation} />
+        {path.map((item) => {
+          return (
+            <Marker
+              position={item}
+              label={'dd'}
+              icon={{
+                url: aa,
+                scale: 3,
+                fillColor: '#EB00FF',
+                scaledSize: new google.maps.Size(34, 25),
+              }}
+            >
+              <InfoWindow>
+                <span>Something</span>
+              </InfoWindow>
+            </Marker>
+          );
+        })}
+
         <Polygon
           // Make the Polygon editable / draggable
           editable
