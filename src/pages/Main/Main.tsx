@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   MainContainer,
   Header,
@@ -7,6 +7,10 @@ import {
   Building,
   ParticipantsTitle,
   BuildingWraaper,
+  FloorButtonWrapper,
+  FloorButton,
+  GoogleMapWrapper,
+  CurrentButton,
 } from './Main.styles';
 
 import {
@@ -14,43 +18,192 @@ import {
   useJsApiLoader,
   Polygon,
   Marker,
+  Circle,
+  InfoWindow,
 } from '@react-google-maps/api';
 
 import useGeolocation from 'react-hook-geolocation';
+
+import aa from '../../assets/icons/312.png';
 
 const Main = () => {
   const geolocation = useGeolocation();
   const [map, setMap] = useState(null);
   const [mapLocation, setMapLocation] = useState({ lat: 0, lng: 0 });
+  const [currentBuilding, setCurrentBuildingn] = useState<string>('공과대학');
+  const [currentMarker, setCurrentMarker] = useState<any>([{ lat: 0, lng: 0 }]);
+  const [a, setA] = useState<any>([{ lat: 0, lng: 0 }]);
+
+  const [infoIndex, setInfoIndex] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  const [floorButton, setFloorButton] = useState([true, false, false]);
 
   let center = {
     lat: 0,
     lng: 0,
   };
 
-  // function getLocation() {
-  //   if (navigator.geolocation) {
-  //     // GPS를 지원하면
-  //     navigator.geolocation.getCurrentPosition(
-  //       function (position) {
-  //         alert(position.coords.latitude + ' ' + position.coords.longitude);
-  //       },
-  //       function (error) {
-  //         alert(error);
-  //       },
-  //       {
-  //         enableHighAccuracy: false,
-  //         maximumAge: 0,
-  //         timeout: Infinity,
-  //       }
-  //     );
-  //   } else {
-  //     alert('GPS를 지원하지 않습니다');
-  //   }
-  // }
-  // getLocation();
+  let testData = {
+    공과대학: {
+      location: {
+        lat: 37.2463696,
+        lng: 127.0803839,
+      },
+      floor: 7,
+      roomposition: [
+        {
+          name: '101',
+          lat: 37.2460496,
+          lng: 127.0807303,
+        },
+        {
+          name: '102',
+          lat: 37.2461435,
+          lng: 127.080734,
+        },
+        { name: '103', lat: 37.2462135, lng: 127.0807379 },
+      ],
+    },
+    전자정보대학: {
+      location: {
+        lat: 37.2395856,
+        lng: 127.083447,
+      },
+      floor: 7,
+      roomposition: [
+        {
+          name: '101',
+          lat: 37.2463696,
+          lng: 127.0803839,
+        },
+        {
+          name: '102',
+          lat: 37.2463698,
+          lng: 127.0803839,
+        },
+        { name: '103', lat: 37.2463698, lng: 127.0803839 },
+      ],
+    },
+    외국어대학: {
+      location: {
+        lat: 37.2451036,
+        lng: 127.0778022,
+      },
+      floor: 7,
+      roomposition: [
+        {
+          name: '101',
+          lat: 37.2463696,
+          lng: 127.0803839,
+        },
+        {
+          name: '102',
+          lat: 37.2463698,
+          lng: 127.0803839,
+        },
+        { name: '103', lat: 37.2463698, lng: 127.0803839 },
+      ],
+    },
+    체육대학: {
+      location: {
+        lat: 37.2443537,
+        lng: 127.0804408,
+      },
+      floor: 7,
+      roomposition: [
+        {
+          name: '101',
+          lat: 37.2463696,
+          lng: 127.0803839,
+        },
+        {
+          name: '102',
+          lat: 37.2463698,
+          lng: 127.0803839,
+        },
+        { name: '103', lat: 37.2463698, lng: 127.0803839 },
+      ],
+    },
+    예술디자인대학: {
+      location: {
+        lat: 37.241596,
+        lng: 127.084429,
+      },
+      floor: 7,
+      roomposition: [
+        {
+          name: '101',
+          lat: 37.2463696,
+          lng: 127.0803839,
+        },
+        {
+          name: '102',
+          lat: 37.2463698,
+          lng: 127.0803839,
+        },
+        { name: '103', lat: 37.2463698, lng: 127.0803839 },
+      ],
+    },
+    생명과학대학: {
+      location: {
+        lat: 37.2428622,
+        lng: 127.0810594,
+      },
+      floor: 7,
+      roomposition: {
+        '101': {
+          lat: 37.2463696,
+          lng: 127.0803839,
+        },
+        '102': {
+          lat: 37.2463698,
+          lng: 127.0803839,
+        },
+        '103': {
+          lat: 37.2463698,
+          lng: 127.0803839,
+        },
+      },
+    },
+  };
 
-  // console.log(geolocation);
+  function getLocation() {
+    const getCurrentPosBtn = () => {
+      navigator.geolocation.getCurrentPosition(
+        getPosSuccess,
+        () => alert('위치 정보를 가져오는데 실패했습니다.'),
+        {
+          enableHighAccuracy: true,
+          maximumAge: 30000,
+          timeout: 27000,
+        }
+      );
+    };
+
+    const getPosSuccess = (pos: GeolocationPosition) => {
+      // 현재 위치(위도, 경도) 가져온다.
+      alert(
+        pos.coords.latitude // 경도
+      );
+      // 지도를 이동 시킨다.
+      // map.panTo(currentPos);
+
+      // 기존 마커를 제거하고 새로운 마커를 넣는다.
+      // marker.setMap(null);
+      // marker.setPosition(currentPos);
+      // marker.setMap(map);
+    };
+
+    getCurrentPosBtn();
+  }
+
+  console.log('Geo', geolocation.latitude);
 
   const containerStyle = {
     width: '100%',
@@ -64,9 +217,32 @@ const Main = () => {
     };
   }
 
-  const handleBuildingClick = () => {
-    setMapLocation(center);
-  };
+  const handleBuildingClick = useCallback(
+    (text: string) => {
+      console.log(text);
+      if (text === '공과대학') {
+        setCurrentBuildingn('공과대학');
+        setMapLocation(testData['공과대학'].location);
+        setCurrentMarker(testData['공과대학'].roomposition);
+      } else if (text === '전자정보대학') {
+        setCurrentBuildingn('전자정보대학');
+        setMapLocation(testData['전자정보대학'].location);
+      } else if (text === '외국어대학') {
+        setCurrentBuildingn('외국어대학');
+        setMapLocation(testData['외국어대학'].location);
+      } else if (text === '체육대학') {
+        setCurrentBuildingn('체육대학');
+        setMapLocation(testData['체육대학'].location);
+      } else if (text === '예술디자인대학') {
+        setCurrentBuildingn('예술디자인대학');
+        setMapLocation(testData['예술디자인대학'].location);
+      } else if (text === '생명과학대학') {
+        setCurrentBuildingn('생명과학대학');
+        setMapLocation(testData['생명과학대학'].location);
+      }
+    },
+    [mapLocation]
+  );
 
   const path = [
     {
@@ -86,6 +262,8 @@ const Main = () => {
       lng: 127.083575,
     },
   ];
+
+  console.log(currentMarker);
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -111,29 +289,116 @@ const Main = () => {
 
     for (let i = 0; i < building.length; i++) {
       result.push(
-        <Building onClick={handleBuildingClick}>{building[i]}</Building>
+        <Building onClick={() => handleBuildingClick(building[i])}>
+          {building[i]}
+        </Building>
       );
     }
 
     return result;
   };
 
+  const getMarker = () => {
+    const result: JSX.Element[] = [];
+
+    for (const a in currentMarker) {
+      console.log(currentMarker[a]);
+      result.push(
+        <Marker
+          position={currentMarker[a]}
+          icon={{
+            url: aa,
+            scale: 3,
+            fillColor: '#EB00FF',
+            scaledSize: new google.maps.Size(34, 30),
+          }}
+        >
+          <InfoWindow>
+            <span>Something</span>
+          </InfoWindow>
+        </Marker>
+      );
+    }
+
+    return result;
+  };
+
+  const click = useCallback(
+    (index: number) => {
+      console.log(index);
+      setInfoIndex((prev) =>
+        prev.map((v, i) => {
+          console.log(i);
+          return index === i ? !v : false;
+        })
+      );
+    },
+    [infoIndex]
+  );
+
+  const handleFloorClick = useCallback(
+    (floor: number) => {
+      if (floor == 0) {
+        setCurrentMarker([
+          { lat: 37.246459, lng: 127.0807249, name: '112' },
+          { lat: 37.2465465, lng: 127.0807346, name: '113' },
+          { lat: 37.2465465, lng: 127.0807346, name: '114' },
+        ]);
+      }
+
+      if (floor == 1) {
+        setCurrentMarker([
+          { lat: 37.24659, lng: 127.0807549, name: '212' },
+          { lat: 37.2465665, lng: 127.0807456, name: '213' },
+          { lat: 37.2465765, lng: 127.0807376, name: '214' },
+        ]);
+      }
+
+      if (floor == 2) {
+        setCurrentMarker([
+          {
+            name: '301',
+            lat: 37.2460496,
+            lng: 127.0807303,
+          },
+          {
+            name: '302',
+            lat: 37.2461435,
+            lng: 127.080734,
+          },
+          { name: '303', lat: 37.2462135, lng: 127.0807379 },
+        ]);
+      }
+      setFloorButton((prev) =>
+        prev.map((v, i) => {
+          return floor === i ? !v : false;
+        })
+      );
+    },
+    [currentMarker, floorButton]
+  );
+
+  const handleCurrentLocationClick = () => {};
+
   const locationButton = document.createElement('button');
 
   locationButton.textContent = 'Pan to Current Location';
   locationButton.classList.add('custom-map-control-button');
 
-  const onLoad = React.useCallback(function callback(map: any) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+  // const onLoad = React.useCallback(function callback(map: any) {
+  //   // This is just an example of getting and using the map instance!!! don't just blindly copy!
+  //   const bounds = new window.google.maps.LatLngBounds(center);
+  //   map.fitBounds(bounds);
+  //   setMap(map);
 
-    setMap(map);
-  }, []);
+  //   setMapLocation(map);
+  // }, []);
 
   const onUnmount = React.useCallback(function callback(map: any) {
     setMap(null);
   }, []);
+
+  console.log('map', map);
 
   return isLoaded ? (
     <MainContainer>
@@ -144,37 +409,91 @@ const Main = () => {
       <SelectorBoxWrapper>
         <BuildingWraaper>{getParticipant()}</BuildingWraaper>
       </SelectorBoxWrapper>
-
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={15}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        <Marker position={mapLocation} />
-        <Polygon
-          // Make the Polygon editable / draggable
-          editable
-          draggable
-          path={path}
-          // Event used when manipulating and adding points
-          // onMouseUp={onEdit}
-          // // Event used when dragging the whole Polygon
-          // onDragEnd={onEdit}
+      <GoogleMapWrapper>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={mapLocation}
+          onZoomChanged={() => {}}
+          zoom={18}
           // onLoad={onLoad}
-          // onUnmount={onUnmount}
-          options={{
-            fillColor: 'red',
-            strokeColor: 'red',
-            strokeWeight: 5,
-            geodesic: false,
-            strokeOpacity: 0.75,
+          onUnmount={onUnmount}
+        >
+          <Marker position={a}></Marker>
+          {currentMarker.map((item: any, index: any) => {
+            return (
+              <Marker
+                position={{ lat: item['lat'], lng: item['lng'] }}
+                icon={{
+                  url: aa,
+                  scale: 3,
+                  fillColor: '#EB00FF',
+                  scaledSize: new google.maps.Size(34, 25),
+                }}
+                onClick={() => {
+                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                  click(index);
+                }}
+              >
+                {
+                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                  infoIndex[index] ? (
+                    <InfoWindow>
+                      <span>{item['name']}</span>
+                    </InfoWindow>
+                  ) : null
+                }
+              </Marker>
+            );
+          })}
+          <Polygon
+            // Make the Polygon editable / draggable
+            editable
+            draggable
+            path={path}
+            // Event used when manipulating and adding points
+            // onMouseUp={onEdit}
+            // // Event used when dragging the whole Polygon
+            // onDragEnd={onEdit}
+            // onLoad={onLoad}
+            // onUnmount={onUnmount}
+            options={{
+              fillColor: 'red',
+              strokeColor: 'red',
+              strokeWeight: 5,
+              geodesic: false,
+              strokeOpacity: 0.75,
+            }}
+            onClick={() => console.log('ccc')}
+          />
+        </GoogleMap>
+      </GoogleMapWrapper>
+      <FloorButtonWrapper>
+        <FloorButton
+          active={floorButton[0]}
+          onClick={() => {
+            handleFloorClick(0);
           }}
-          onClick={() => console.log('ccc')}
-        />
-        <></>
-      </GoogleMap>
+        >
+          1
+        </FloorButton>
+        <FloorButton
+          active={floorButton[1]}
+          onClick={() => {
+            handleFloorClick(1);
+          }}
+        >
+          2
+        </FloorButton>
+        <FloorButton
+          active={floorButton[2]}
+          onClick={() => {
+            handleFloorClick(2);
+          }}
+        >
+          3
+        </FloorButton>
+      </FloorButtonWrapper>
+      <CurrentButton onClick={() => getLocation()}>위치</CurrentButton>
     </MainContainer>
   ) : (
     <></>
