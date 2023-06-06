@@ -77,3 +77,18 @@ export const Building = styled.div`
     width: 103px;
   }
 `;
+
+export const FloorButton = styled.div`
+  width: 80px;
+  height: 150px;
+  background-color: red;
+  position: absolute;
+  bottom: 0px;
+  z-index: 100;
+`;
+
+export const GoogleMapWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+`;
