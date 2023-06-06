@@ -102,11 +102,12 @@ export const FloorButton = styled.div<{ active: boolean }>`
   cursor: pointer;
 `;
 
-export const CurrentButton = styled.div`
-  width: 50px;
-  height: 50px;
+export const CurrentButton = styled.img`
+  width: 40px;
+  height: 40px;
   background-color: white;
-  border: 3px solid ${theme.colors.burgundy};
+  box-shadow: 1px 3px 4px black;
+  padding: 5px;
   border-radius: 50px;
   position: absolute;
   bottom: 200px;
