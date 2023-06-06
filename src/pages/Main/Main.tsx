@@ -9,7 +9,12 @@ import {
   BuildingWraaper,
 } from './Main.styles';
 
-import { GoogleMap, useJsApiLoader, Polygon } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Polygon,
+  Marker,
+} from '@react-google-maps/api';
 
 import useGeolocation from 'react-hook-geolocation';
 
@@ -59,6 +64,10 @@ const Main = () => {
     };
   }
 
+  const handleBuildingClick = () => {
+    setMapLocation(center);
+  };
+
   const path = [
     {
       lat: 37.239683,
@@ -101,7 +110,9 @@ const Main = () => {
     ];
 
     for (let i = 0; i < building.length; i++) {
-      result.push(<Building>{building[i]}</Building>);
+      result.push(
+        <Building onClick={handleBuildingClick}>{building[i]}</Building>
+      );
     }
 
     return result;
@@ -137,10 +148,11 @@ const Main = () => {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={10}
+        zoom={15}
         onLoad={onLoad}
         onUnmount={onUnmount}
       >
+        <Marker position={mapLocation} />
         <Polygon
           // Make the Polygon editable / draggable
           editable
@@ -155,8 +167,9 @@ const Main = () => {
           options={{
             fillColor: 'red',
             strokeColor: 'red',
-            strokeWeight: 0,
+            strokeWeight: 5,
             geodesic: false,
+            strokeOpacity: 0.75,
           }}
           onClick={() => console.log('ccc')}
         />

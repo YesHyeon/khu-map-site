@@ -61,7 +61,7 @@ export const BuildingWraaper = styled.div`
 `;
 
 export const Building = styled.div`
-  width: 110px;
+  width: 105px;
   height: 33px;
   margin-right: 10px;
   margin-left: 10px;
@@ -74,6 +74,6 @@ export const Building = styled.div`
   background-color: white;
 
   @media screen and (max-width: 412px) {
-    width: 64px;
+    width: 103px;
   }
 `;
