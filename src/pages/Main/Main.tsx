@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   MainContainer,
   Header,
@@ -25,6 +25,7 @@ import {
 import useGeolocation from 'react-hook-geolocation';
 
 import aa from '../../assets/icons/312.png';
+import locationImage from '../../assets/icons/locationImg.png';
 
 const Main = () => {
   const geolocation = useGeolocation();
@@ -173,7 +174,11 @@ const Main = () => {
     },
   };
 
-  function getLocation() {
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  const getLocation = useCallback(() => {
     const getCurrentPosBtn = () => {
       navigator.geolocation.getCurrentPosition(
         getPosSuccess,
@@ -188,20 +193,13 @@ const Main = () => {
 
     const getPosSuccess = (pos: GeolocationPosition) => {
       // 현재 위치(위도, 경도) 가져온다.
-      alert(
-        pos.coords.latitude // 경도
-      );
-      // 지도를 이동 시킨다.
-      // map.panTo(currentPos);
 
-      // 기존 마커를 제거하고 새로운 마커를 넣는다.
-      // marker.setMap(null);
-      // marker.setPosition(currentPos);
-      // marker.setMap(map);
+      setA({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      setMapLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
     };
 
     getCurrentPosBtn();
-  }
+  }, [a, mapLocation]);
 
   console.log('Geo', geolocation.latitude);
 
@@ -493,7 +491,7 @@ const Main = () => {
           3
         </FloorButton>
       </FloorButtonWrapper>
-      <CurrentButton onClick={() => getLocation()}>위치</CurrentButton>
+      <CurrentButton src={locationImage} onClick={() => getLocation()} />
     </MainContainer>
   ) : (
     <></>
