@@ -78,13 +78,28 @@ export const Building = styled.div`
   }
 `;
 
-export const FloorButton = styled.div`
+export const FloorButtonWrapper = styled.div`
   width: 80px;
   height: 150px;
-  background-color: red;
+  background-color: white
+  border-radius: 10px;
   position: absolute;
-  bottom: 0px;
+  bottom: 25px;
+  left: 10px;
   z-index: 100;
+`;
+
+export const FloorButton = styled.div<{ active: boolean }>`
+  width: 100%;
+  height: calc(100% / 3);
+  background-color: ${(props: any) => (props.active ? 'pink' : 'white')};
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  border-bottom: 1px solid;
+  cursor: pointer;
 `;
 
 export const GoogleMapWrapper = styled.div`

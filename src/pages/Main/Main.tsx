@@ -7,6 +7,7 @@ import {
   Building,
   ParticipantsTitle,
   BuildingWraaper,
+  FloorButtonWrapper,
   FloorButton,
   GoogleMapWrapper,
 } from './Main.styles';
@@ -39,6 +40,8 @@ const Main = () => {
     false,
   ]);
 
+  const [floorButton, setFloorButton] = useState([true, false, false]);
+
   let center = {
     lat: 0,
     lng: 0,
@@ -67,8 +70,8 @@ const Main = () => {
     },
     전자정보대학: {
       location: {
-        lat: 37.2463696,
-        lng: 127.0803839,
+        lat: 37.2395856,
+        lng: 127.083447,
       },
       floor: 7,
       roomposition: [
@@ -216,7 +219,7 @@ const Main = () => {
         setMapLocation(testData['전자정보대학'].location);
       } else if (text === '외국어대학') {
         setCurrentBuildingn('외국어대학');
-        setMapLocation(testData['전자정보대학'].location);
+        setMapLocation(testData['외국어대학'].location);
       } else if (text === '체육대학') {
         setCurrentBuildingn('체육대학');
         setMapLocation(testData['체육대학'].location);
@@ -325,6 +328,48 @@ const Main = () => {
     [infoIndex]
   );
 
+  const handleFloorClick = useCallback(
+    (floor: number) => {
+      if (floor == 0) {
+        setCurrentMarker([
+          { lat: 37.246459, lng: 127.0807249, name: '112' },
+          { lat: 37.2465465, lng: 127.0807346, name: '113' },
+          { lat: 37.2465465, lng: 127.0807346, name: '114' },
+        ]);
+      }
+
+      if (floor == 1) {
+        setCurrentMarker([
+          { lat: 37.24659, lng: 127.0807549, name: '212' },
+          { lat: 37.2465665, lng: 127.0807456, name: '213' },
+          { lat: 37.2465765, lng: 127.0807376, name: '214' },
+        ]);
+      }
+
+      if (floor == 2) {
+        setCurrentMarker([
+          {
+            name: '301',
+            lat: 37.2460496,
+            lng: 127.0807303,
+          },
+          {
+            name: '302',
+            lat: 37.2461435,
+            lng: 127.080734,
+          },
+          { name: '303', lat: 37.2462135, lng: 127.0807379 },
+        ]);
+      }
+      setFloorButton((prev) =>
+        prev.map((v, i) => {
+          return floor === i ? !v : false;
+        })
+      );
+    },
+    [currentMarker, floorButton]
+  );
+
   const locationButton = document.createElement('button');
 
   locationButton.textContent = 'Pan to Current Location';
@@ -410,7 +455,32 @@ const Main = () => {
           />
         </GoogleMap>
       </GoogleMapWrapper>
-      <FloorButton></FloorButton>
+      <FloorButtonWrapper>
+        <FloorButton
+          active={floorButton[0]}
+          onClick={() => {
+            handleFloorClick(0);
+          }}
+        >
+          1
+        </FloorButton>
+        <FloorButton
+          active={floorButton[1]}
+          onClick={() => {
+            handleFloorClick(1);
+          }}
+        >
+          2
+        </FloorButton>
+        <FloorButton
+          active={floorButton[2]}
+          onClick={() => {
+            handleFloorClick(2);
+          }}
+        >
+          3
+        </FloorButton>
+      </FloorButtonWrapper>
     </MainContainer>
   ) : (
     <></>
