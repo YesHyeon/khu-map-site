@@ -5,6 +5,13 @@
 ### 개발버전 링크 
 https://khubmap.vercel.app
 
+# 기술스택 👨🏻‍💻
+
+- React
+- Typescript
+- Styled.component
+- Vercel
+
 <img width="250" alt="image" src="https://github.com/YesHyeon/khu-map-site/assets/81014501/d7dd91ff-866b-4295-b87a-7b897bc526d7">
 
 <img width="258" alt="image" src="https://github.com/YesHyeon/khu-map-site/assets/81014501/9b6e3229-eea4-4023-b14d-d00dc707fea7">
