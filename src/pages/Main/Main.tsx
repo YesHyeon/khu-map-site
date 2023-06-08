@@ -26,18 +26,90 @@ import {
 
 import useGeolocation from 'react-hook-geolocation';
 
-import aa from '../../assets/icons/312.png';
 import locationImage from '../../assets/icons/locationImg.png';
+
+import eng from '../../assets/datas/eng2.json';
 
 const Main = () => {
   const geolocation = useGeolocation();
   const [map, setMap] = useState(null);
   const [mapLocation, setMapLocation] = useState({ lat: 0, lng: 0 });
   const [currentBuilding, setCurrentBuildingn] = useState<string>('공과대학');
-  const [currentMarker, setCurrentMarker] = useState<any>([{ lat: 0, lng: 0 }]);
+  const [currentMarker, setCurrentMarker] = useState<any>([
+    { lat: 0, lng: 0, name: 101 },
+  ]);
   const [a, setA] = useState<any>([{ lat: 0, lng: 0 }]);
 
   const [infoIndex, setInfoIndex] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -54,6 +126,7 @@ const Main = () => {
     false,
     false,
     false,
+    true,
   ]);
 
   const [floorButton, setFloorButton] = useState([true, false, false]);
@@ -192,6 +265,14 @@ const Main = () => {
   }, []);
 
   const getLocation = useCallback(() => {
+    console.log('--', eng);
+
+    setBuildingIndex((prev) =>
+      prev.map((v, i) => {
+        return 8 === i ? !v : false;
+      })
+    );
+
     const getCurrentPosBtn = () => {
       navigator.geolocation.getCurrentPosition(
         getPosSuccess,
@@ -234,7 +315,7 @@ const Main = () => {
       if (text === '공과대학') {
         setCurrentBuildingn('공과대학');
         setMapLocation(testData['공과대학'].location);
-        setCurrentMarker(testData['공과대학'].roomposition);
+        setCurrentMarker(eng['공과대학'].roomposition[0][1]);
       } else if (text === '전자정보대학') {
         setCurrentBuildingn('전자정보대학');
         setMapLocation(testData['전자정보대학'].location);
@@ -327,7 +408,7 @@ const Main = () => {
         <Marker
           position={currentMarker[a]}
           icon={{
-            url: aa,
+            url: '../../assets/icons/322.png',
             scale: 3,
             fillColor: '#EB00FF',
             scaledSize: new google.maps.Size(34, 30),
@@ -359,41 +440,26 @@ const Main = () => {
   const handleFloorClick = useCallback(
     (floor: number) => {
       if (floor == 0) {
-        setCurrentMarker([
-          { lat: 37.246459, lng: 127.0807249, name: '112' },
-          { lat: 37.2465465, lng: 127.0807346, name: '113' },
-          { lat: 37.2465465, lng: 127.0807346, name: '114' },
-        ]);
+        setCurrentMarker(eng['공과대학'].roomposition[0][1]);
+        setFloorButton((prev) =>
+          prev.map((v, i) => {
+            return floor === i ? !v : false;
+          })
+        );
       }
 
       if (floor == 1) {
-        setCurrentMarker([
-          { lat: 37.24659, lng: 127.0807549, name: '212' },
-          { lat: 37.2465665, lng: 127.0807456, name: '213' },
-          { lat: 37.2465765, lng: 127.0807376, name: '214' },
-        ]);
+        setCurrentMarker(eng['공과대학'].roomposition[0][2]);
+        setFloorButton((prev) =>
+          prev.map((v, i) => {
+            return floor === i ? !v : false;
+          })
+        );
       }
 
       if (floor == 2) {
-        setCurrentMarker([
-          {
-            name: '301',
-            lat: 37.2460496,
-            lng: 127.0807303,
-          },
-          {
-            name: '302',
-            lat: 37.2461435,
-            lng: 127.080734,
-          },
-          { name: '303', lat: 37.2462135, lng: 127.0807379 },
-        ]);
+        alert('지원 예정입니다');
       }
-      setFloorButton((prev) =>
-        prev.map((v, i) => {
-          return floor === i ? !v : false;
-        })
-      );
     },
     [currentMarker, floorButton]
   );
@@ -438,11 +504,12 @@ const Main = () => {
         >
           <Marker position={a}></Marker>
           {currentMarker.map((item: any, index: any) => {
+            console.log('여기야', item['name']);
             return (
               <Marker
                 position={{ lat: item['lat'], lng: item['lng'] }}
                 icon={{
-                  url: aa,
+                  url: require(`../../assets/icons/${item['name']}.png`),
                   scale: 3,
                   fillColor: '#EB00FF',
                   scaledSize: new google.maps.Size(34, 25),
@@ -456,7 +523,7 @@ const Main = () => {
                   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                   infoIndex[index] ? (
                     <InfoWindow>
-                      <span>{item['name']}</span>
+                      <span>{item['info']}</span>
                     </InfoWindow>
                   ) : null
                 }
