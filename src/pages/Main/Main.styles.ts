@@ -10,29 +10,29 @@ export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 2px solid;
 `;
 
 export const Header = styled.div`
   width: 100%;
   height: 60px;
-  background-color: ${theme.colors.burgundy};
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
+  border-bottom: 3px solid black;
   ${theme.typography.semibold01};
 `;
 
 export const Feedback = styled.div`
   position: absolute;
-  top: 10px;
+  top: 15px;
   right: 20px;
   width: 40px;
   height: 20px;
   font-size: 13px;
   text-decoration: underline;
-  color: white;
+  color: black;
   cursor: pointer;
 `;
 
@@ -73,7 +73,9 @@ export const Building = styled.div<{ active: boolean }>`
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  background-color: ${(props: any) => (props.active ? 'pink' : 'white')};
+  background-color: ${(props: any) =>
+    props.active ? `${theme.colors.burgundy};` : 'white'};
+  color: ${(props: any) => (props.active ? 'white' : 'black')};
 
   @media screen and (max-width: 412px) {
     width: 103px;
@@ -86,7 +88,7 @@ export const FloorButtonWrapper = styled.div`
   background-color: white
   border-radius: 10px;
   position: absolute;
-  bottom: 25px;
+  bottom: -5px;
   left: 10px;
   z-index: 100;
 `;
@@ -94,7 +96,8 @@ export const FloorButtonWrapper = styled.div`
 export const FloorButton = styled.div<{ active: boolean }>`
   width: 100%;
   height: 40px;
-  background-color: ${(props: any) => (props.active ? 'pink' : 'white')};
+  background-color: ${(props: any) =>
+    props.active ? `${theme.colors.burgundy}` : 'white'};
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -102,6 +105,7 @@ export const FloorButton = styled.div<{ active: boolean }>`
   font-size: 20px;
   border-bottom: 1px solid;
   cursor: pointer;
+  color: ${(props: any) => (props.active ? 'white' : 'black')};
 `;
 
 export const CurrentButton = styled.img`
@@ -163,4 +167,40 @@ export const InfoButton = styled.img`
   height: 20px;
   padding-left: 5px;
   cursor: pointer;
+`;
+
+export const HeaderImg = styled.img`
+  height: 50px;
+  padding-left: 5px;
+`;
+
+export const ViewButtonWrapper = styled.div`
+  width: 260px;
+  height: 50px;
+  border-radius: 10px;
+  position: absolute;
+  top: 175px;
+  left: 148px;
+  z-index: 100;
+  display: flex;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const ViewButton = styled.div<{ active: boolean }>`
+  width: 80px;
+  height: 40px;
+  background-color: ${(props: any) =>
+    props.active ? 'rgb(252,243,159)' : 'white'};
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+  font-size: 15px;
+  cursor: pointer;
+  color: ${(props: any) => (props.active ? 'black' : 'black')};
+  box-shadow: 0px 1px 1px black;
 `;

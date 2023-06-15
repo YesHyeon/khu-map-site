@@ -15,6 +15,9 @@ import {
   FixText,
   InfoButton,
   ButtonWrapper,
+  HeaderImg,
+  ViewButtonWrapper,
+  ViewButton,
 } from './Main.styles';
 
 import {
@@ -27,6 +30,7 @@ import {
 } from '@react-google-maps/api';
 
 import InfoBox from '../../components/InfoBox/InfoBox';
+import khuLogo from '../../assets/images/khuLogo.png';
 
 import useGeolocation from 'react-hook-geolocation';
 
@@ -50,7 +54,12 @@ const Main = () => {
     false,
   ]);
 
-  const [infoIndex, setInfoIndex] = useState([
+  const [infoIndex, SetInfoIndex] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -146,6 +155,13 @@ const Main = () => {
   ]);
 
   const [floorButton, setFloorButton] = useState([true, false, false]);
+  const [viewButton, setViewButton] = useState([
+    true,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   let center = {
     lat: 0,
@@ -444,7 +460,7 @@ const Main = () => {
   const click = useCallback(
     (index: number) => {
       console.log(index);
-      setInfoIndex((prev) =>
+      SetInfoIndex((prev) =>
         prev.map((v, i) => {
           console.log(i);
           return index === i ? !v : false;
@@ -457,6 +473,11 @@ const Main = () => {
   const handleFloorClick = useCallback(
     (floor: number) => {
       SetAvailableShowInfoBox([false, false, false]);
+      SetInfoIndex((prev) =>
+        prev.map((v, i) => {
+          return false;
+        })
+      );
 
       if (floor == 0) {
         setCurrentMarker(eng['공과대학'].roomposition[0][1]);
@@ -481,6 +502,60 @@ const Main = () => {
       }
     },
     [currentMarker, floorButton]
+  );
+
+  const handleViewClick = useCallback(
+    (view: number) => {
+      SetAvailableShowInfoBox([false, false, false]);
+      SetInfoIndex((prev) =>
+        prev.map((v, i) => {
+          return false;
+        })
+      );
+
+      if (view == 0) {
+        // setCurrentMarker(eng['공과대학'].roomposition[0][1]);
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+
+      if (view == 1) {
+        // setCurrentMarker(eng['공과대학'].roomposition[0][2]);
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+
+      if (view == 2) {
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+
+      if (view == 3) {
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+
+      if (view == 4) {
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+    },
+    [currentMarker, viewButton, availableShowInfoBox]
   );
 
   const handleInfoButtonClick = useCallback(
@@ -518,7 +593,7 @@ const Main = () => {
   return isLoaded ? (
     <MainContainer>
       <Header>
-        경국맵
+        <HeaderImg src={khuLogo} />
         <Feedback
           onClick={() => {
             window.open(
@@ -532,6 +607,62 @@ const Main = () => {
       <SelectorBoxWrapper>
         <BuildingWraaper>{getParticipant()}</BuildingWraaper>
       </SelectorBoxWrapper>
+      <ViewButtonWrapper>
+        {buildingIndex[0] == true ? (
+          <>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[0]}
+                onClick={() => {
+                  handleViewClick(0);
+                }}
+              >
+                전체
+              </ViewButton>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[1]}
+                onClick={() => {
+                  handleViewClick(1);
+                }}
+              >
+                호실
+              </ViewButton>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[2]}
+                onClick={() => {
+                  handleViewClick(2);
+                }}
+              >
+                행정실
+              </ViewButton>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[3]}
+                onClick={() => {
+                  handleViewClick(3);
+                }}
+              >
+                부대시설
+              </ViewButton>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[4]}
+                onClick={() => {
+                  handleViewClick(4);
+                }}
+              >
+                연구실
+              </ViewButton>
+            </ButtonWrapper>
+          </>
+        ) : null}
+      </ViewButtonWrapper>
       <GoogleMapWrapper>
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -543,31 +674,140 @@ const Main = () => {
         >
           <Marker position={a}></Marker>
           {currentMarker.map((item: any, index: any) => {
-            console.log('여기야', item['name']);
-            return (
-              <Marker
-                position={{ lat: item['lat'], lng: item['lng'] }}
-                icon={{
-                  url: require(`../../assets/icons/${item['name']}.png`),
-                  scale: 3,
-                  fillColor: '#EB00FF',
-                  scaledSize: new google.maps.Size(34, 25),
-                }}
-                onClick={() => {
-                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                  click(index);
-                }}
-              >
-                {
-                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                  infoIndex[index] ? (
-                    <InfoWindow>
-                      <span>{item['info']}</span>
-                    </InfoWindow>
-                  ) : null
-                }
-              </Marker>
-            );
+            if (viewButton[0] == true) {
+              return (
+                <Marker
+                  position={{ lat: item['lat'], lng: item['lng'] }}
+                  icon={{
+                    url: require(`../../assets/icons/${item['name']}.png`),
+                    scale: 3,
+                    fillColor: '#EB00FF',
+                    scaledSize: new google.maps.Size(34, 25),
+                  }}
+                  onClick={() => {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    click(index);
+                  }}
+                >
+                  {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    infoIndex[index] ? (
+                      <InfoWindow>
+                        <span>{item['info']}</span>
+                      </InfoWindow>
+                    ) : null
+                  }
+                </Marker>
+              );
+            } else if (viewButton[1] == true) {
+              if (item['type'] == 0) {
+                return (
+                  <Marker
+                    position={{ lat: item['lat'], lng: item['lng'] }}
+                    icon={{
+                      url: require(`../../assets/icons/${item['name']}.png`),
+                      scale: 3,
+                      fillColor: '#EB00FF',
+                      scaledSize: new google.maps.Size(34, 25),
+                    }}
+                    onClick={() => {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      click(index);
+                    }}
+                  >
+                    {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      infoIndex[index] ? (
+                        <InfoWindow>
+                          <span>{item['info']}</span>
+                        </InfoWindow>
+                      ) : null
+                    }
+                  </Marker>
+                );
+              }
+            } else if (viewButton[2] == true) {
+              if (item['type'] == 2) {
+                return (
+                  <Marker
+                    position={{ lat: item['lat'], lng: item['lng'] }}
+                    icon={{
+                      url: require(`../../assets/icons/${item['name']}.png`),
+                      scale: 3,
+                      fillColor: '#EB00FF',
+                      scaledSize: new google.maps.Size(34, 25),
+                    }}
+                    onClick={() => {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      click(index);
+                    }}
+                  >
+                    {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      infoIndex[index] ? (
+                        <InfoWindow>
+                          <span>{item['info']}</span>
+                        </InfoWindow>
+                      ) : null
+                    }
+                  </Marker>
+                );
+              }
+            } else if (viewButton[3] == true) {
+              if (item['type'] == 3) {
+                return (
+                  <Marker
+                    position={{ lat: item['lat'], lng: item['lng'] }}
+                    icon={{
+                      url: require(`../../assets/icons/${item['name']}.png`),
+                      scale: 3,
+                      fillColor: '#EB00FF',
+                      scaledSize: new google.maps.Size(34, 25),
+                    }}
+                    onClick={() => {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      click(index);
+                    }}
+                  >
+                    {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      infoIndex[index] ? (
+                        <InfoWindow>
+                          <span>{item['info']}</span>
+                        </InfoWindow>
+                      ) : null
+                    }
+                  </Marker>
+                );
+              }
+            } else if (viewButton[4] == true) {
+              if (item['type'] == 1) {
+                return (
+                  <Marker
+                    position={{ lat: item['lat'], lng: item['lng'] }}
+                    icon={{
+                      url: require(`../../assets/icons/${item['name']}.png`),
+                      scale: 3,
+                      fillColor: '#EB00FF',
+                      scaledSize: new google.maps.Size(34, 25),
+                    }}
+                    onClick={() => {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      click(index);
+                    }}
+                  >
+                    {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      infoIndex[index] ? (
+                        <InfoWindow>
+                          <span>{item['info']}</span>
+                        </InfoWindow>
+                      ) : null
+                    }
+                  </Marker>
+                );
+              }
+            }
           })}
           <Polygon
             // Make the Polygon editable / draggable
