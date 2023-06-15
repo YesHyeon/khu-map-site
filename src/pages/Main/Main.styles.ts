@@ -10,6 +10,7 @@ export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border: 2px solid;
 `;
 
 export const Header = styled.div`
@@ -32,6 +33,7 @@ export const Feedback = styled.div`
   font-size: 13px;
   text-decoration: underline;
   color: white;
+  cursor: pointer;
 `;
 
 export const SelectorBoxWrapper = styled.div`
