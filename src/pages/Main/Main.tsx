@@ -669,7 +669,6 @@ const Main = () => {
           center={mapLocation}
           onZoomChanged={() => {}}
           zoom={18}
-          // onLoad={onLoad}
           onUnmount={onUnmount}
         >
           <Marker position={a}></Marker>

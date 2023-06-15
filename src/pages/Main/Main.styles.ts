@@ -10,6 +10,7 @@ export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow-x: none;
 `;
 
 export const Header = styled.div`
@@ -88,7 +89,7 @@ export const FloorButtonWrapper = styled.div`
   background-color: white
   border-radius: 10px;
   position: absolute;
-  bottom: -5px;
+  bottom:24px;
   left: 10px;
   z-index: 100;
 `;
@@ -175,22 +176,23 @@ export const HeaderImg = styled.img`
 `;
 
 export const ViewButtonWrapper = styled.div`
-  width: 260px;
+  width: 100%;
   height: 50px;
   border-radius: 10px;
   position: absolute;
-  top: 175px;
-  left: 148px;
+  top: 170px;
+  left: 0px;
   z-index: 100;
   display: flex;
   overflow-x: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
+  background: white;
 `;
 
 export const ViewButton = styled.div<{ active: boolean }>`
-  width: 80px;
+  width: 70px;
   height: 40px;
   background-color: ${(props: any) =>
     props.active ? 'rgb(252,243,159)' : 'white'};
@@ -199,7 +201,7 @@ export const ViewButton = styled.div<{ active: boolean }>`
   justify-content: center;
   align-items: center;
   margin-right: 4px;
-  font-size: 15px;
+  font-size: 13px;
   cursor: pointer;
   color: ${(props: any) => (props.active ? 'black' : 'black')};
   box-shadow: 0px 1px 1px black;
