@@ -519,7 +519,15 @@ const Main = () => {
     <MainContainer>
       <Header>
         경국맵
-        <Feedback>피드백</Feedback>
+        <Feedback
+          onClick={() => {
+            window.open(
+              'https://docs.google.com/forms/d/e/1FAIpQLSfAsYgKx7PS8Vq6cQ-xDPFGhT05yNDcra5lt6fo2YG_Zm-l0g/viewform'
+            );
+          }}
+        >
+          피드백
+        </Feedback>
       </Header>
       <SelectorBoxWrapper>
         <BuildingWraaper>{getParticipant()}</BuildingWraaper>
