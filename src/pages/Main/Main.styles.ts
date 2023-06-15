@@ -69,11 +69,13 @@ export const Building = styled.div<{ active: boolean }>`
   margin-right: 10px;
   margin-left: 10px;
   margin-bottom: 6px;
+  font-size: 13px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-weight: bold;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 8px;
   background-color: ${(props: any) =>
     props.active ? `${theme.colors.burgundy};` : 'white'};
   color: ${(props: any) => (props.active ? 'white' : 'black')};

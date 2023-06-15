@@ -9,7 +9,7 @@ export const MainContainer = styled.div<{ floor: number }>`
   width: 150px;
   padding: 5px;
   height: ${(props: any) =>
-    props.floor == 1 ? '320px' : props.floor == 2 ? '180px' : '10px'};
+    props.floor == 1 ? '345px' : props.floor == 2 ? '205px' : '10px'};
   border: 1px solid;
   justify-content: center;
   border-radius: 13px;
