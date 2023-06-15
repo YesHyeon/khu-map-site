@@ -13,6 +13,11 @@ import {
   CurrentButton,
   FloorText,
   FixText,
+  InfoButton,
+  ButtonWrapper,
+  HeaderImg,
+  ViewButtonWrapper,
+  ViewButton,
 } from './Main.styles';
 
 import {
@@ -24,9 +29,13 @@ import {
   InfoWindow,
 } from '@react-google-maps/api';
 
+import InfoBox from '../../components/InfoBox/InfoBox';
+import khuLogo from '../../assets/images/khuLogo.png';
+
 import useGeolocation from 'react-hook-geolocation';
 
 import locationImage from '../../assets/icons/locationImg.png';
+import info from '../../assets/icons/info.png';
 
 import eng from '../../assets/datas/eng2.json';
 
@@ -39,8 +48,24 @@ const Main = () => {
     { lat: 0, lng: 0, name: 101 },
   ]);
   const [a, setA] = useState<any>([{ lat: 0, lng: 0 }]);
+  const [availableShowInfoBox, SetAvailableShowInfoBox] = useState([
+    false,
+    false,
+    false,
+  ]);
 
-  const [infoIndex, setInfoIndex] = useState([
+  const [infoIndex, SetInfoIndex] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -130,6 +155,13 @@ const Main = () => {
   ]);
 
   const [floorButton, setFloorButton] = useState([true, false, false]);
+  const [viewButton, setViewButton] = useState([
+    true,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   let center = {
     lat: 0,
@@ -316,6 +348,7 @@ const Main = () => {
         setCurrentBuildingn('공과대학');
         setMapLocation(testData['공과대학'].location);
         setCurrentMarker(eng['공과대학'].roomposition[0][1]);
+        SetAvailableShowInfoBox([false, false, false]);
       } else if (text === '전자정보대학') {
         setCurrentBuildingn('전자정보대학');
         setMapLocation(testData['전자정보대학'].location);
@@ -427,7 +460,7 @@ const Main = () => {
   const click = useCallback(
     (index: number) => {
       console.log(index);
-      setInfoIndex((prev) =>
+      SetInfoIndex((prev) =>
         prev.map((v, i) => {
           console.log(i);
           return index === i ? !v : false;
@@ -439,6 +472,13 @@ const Main = () => {
 
   const handleFloorClick = useCallback(
     (floor: number) => {
+      SetAvailableShowInfoBox([false, false, false]);
+      SetInfoIndex((prev) =>
+        prev.map((v, i) => {
+          return false;
+        })
+      );
+
       if (floor == 0) {
         setCurrentMarker(eng['공과대학'].roomposition[0][1]);
         setFloorButton((prev) =>
@@ -464,6 +504,72 @@ const Main = () => {
     [currentMarker, floorButton]
   );
 
+  const handleViewClick = useCallback(
+    (view: number) => {
+      SetAvailableShowInfoBox([false, false, false]);
+      SetInfoIndex((prev) =>
+        prev.map((v, i) => {
+          return false;
+        })
+      );
+
+      if (view == 0) {
+        // setCurrentMarker(eng['공과대학'].roomposition[0][1]);
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+
+      if (view == 1) {
+        // setCurrentMarker(eng['공과대학'].roomposition[0][2]);
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+
+      if (view == 2) {
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+
+      if (view == 3) {
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+
+      if (view == 4) {
+        setViewButton((prev) =>
+          prev.map((v, i) => {
+            return view === i ? !v : false;
+          })
+        );
+      }
+    },
+    [currentMarker, viewButton, availableShowInfoBox]
+  );
+
+  const handleInfoButtonClick = useCallback(
+    (index: number) => {
+      SetAvailableShowInfoBox((prev) =>
+        prev.map((v, i) => {
+          console.log(i);
+          return index === i ? !v : false;
+        })
+      );
+    },
+    [availableShowInfoBox]
+  );
+
   const locationButton = document.createElement('button');
 
   locationButton.textContent = 'Pan to Current Location';
@@ -487,12 +593,76 @@ const Main = () => {
   return isLoaded ? (
     <MainContainer>
       <Header>
-        경국맵
-        <Feedback>피드백</Feedback>
+        <HeaderImg src={khuLogo} />
+        <Feedback
+          onClick={() => {
+            window.open(
+              'https://docs.google.com/forms/d/e/1FAIpQLSfAsYgKx7PS8Vq6cQ-xDPFGhT05yNDcra5lt6fo2YG_Zm-l0g/viewform'
+            );
+          }}
+        >
+          피드백
+        </Feedback>
       </Header>
       <SelectorBoxWrapper>
         <BuildingWraaper>{getParticipant()}</BuildingWraaper>
       </SelectorBoxWrapper>
+      <ViewButtonWrapper>
+        {buildingIndex[0] == true ? (
+          <>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[0]}
+                onClick={() => {
+                  handleViewClick(0);
+                }}
+              >
+                전체
+              </ViewButton>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[1]}
+                onClick={() => {
+                  handleViewClick(1);
+                }}
+              >
+                호실
+              </ViewButton>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[2]}
+                onClick={() => {
+                  handleViewClick(2);
+                }}
+              >
+                행정실
+              </ViewButton>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[3]}
+                onClick={() => {
+                  handleViewClick(3);
+                }}
+              >
+                부대시설
+              </ViewButton>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <ViewButton
+                active={viewButton[4]}
+                onClick={() => {
+                  handleViewClick(4);
+                }}
+              >
+                연구실
+              </ViewButton>
+            </ButtonWrapper>
+          </>
+        ) : null}
+      </ViewButtonWrapper>
       <GoogleMapWrapper>
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -504,31 +674,140 @@ const Main = () => {
         >
           <Marker position={a}></Marker>
           {currentMarker.map((item: any, index: any) => {
-            console.log('여기야', item['name']);
-            return (
-              <Marker
-                position={{ lat: item['lat'], lng: item['lng'] }}
-                icon={{
-                  url: require(`../../assets/icons/${item['name']}.png`),
-                  scale: 3,
-                  fillColor: '#EB00FF',
-                  scaledSize: new google.maps.Size(34, 25),
-                }}
-                onClick={() => {
-                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                  click(index);
-                }}
-              >
-                {
-                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                  infoIndex[index] ? (
-                    <InfoWindow>
-                      <span>{item['info']}</span>
-                    </InfoWindow>
-                  ) : null
-                }
-              </Marker>
-            );
+            if (viewButton[0] == true) {
+              return (
+                <Marker
+                  position={{ lat: item['lat'], lng: item['lng'] }}
+                  icon={{
+                    url: require(`../../assets/icons/${item['name']}.png`),
+                    scale: 3,
+                    fillColor: '#EB00FF',
+                    scaledSize: new google.maps.Size(34, 25),
+                  }}
+                  onClick={() => {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    click(index);
+                  }}
+                >
+                  {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    infoIndex[index] ? (
+                      <InfoWindow>
+                        <span>{item['info']}</span>
+                      </InfoWindow>
+                    ) : null
+                  }
+                </Marker>
+              );
+            } else if (viewButton[1] == true) {
+              if (item['type'] == 0) {
+                return (
+                  <Marker
+                    position={{ lat: item['lat'], lng: item['lng'] }}
+                    icon={{
+                      url: require(`../../assets/icons/${item['name']}.png`),
+                      scale: 3,
+                      fillColor: '#EB00FF',
+                      scaledSize: new google.maps.Size(34, 25),
+                    }}
+                    onClick={() => {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      click(index);
+                    }}
+                  >
+                    {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      infoIndex[index] ? (
+                        <InfoWindow>
+                          <span>{item['info']}</span>
+                        </InfoWindow>
+                      ) : null
+                    }
+                  </Marker>
+                );
+              }
+            } else if (viewButton[2] == true) {
+              if (item['type'] == 2) {
+                return (
+                  <Marker
+                    position={{ lat: item['lat'], lng: item['lng'] }}
+                    icon={{
+                      url: require(`../../assets/icons/${item['name']}.png`),
+                      scale: 3,
+                      fillColor: '#EB00FF',
+                      scaledSize: new google.maps.Size(34, 25),
+                    }}
+                    onClick={() => {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      click(index);
+                    }}
+                  >
+                    {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      infoIndex[index] ? (
+                        <InfoWindow>
+                          <span>{item['info']}</span>
+                        </InfoWindow>
+                      ) : null
+                    }
+                  </Marker>
+                );
+              }
+            } else if (viewButton[3] == true) {
+              if (item['type'] == 3) {
+                return (
+                  <Marker
+                    position={{ lat: item['lat'], lng: item['lng'] }}
+                    icon={{
+                      url: require(`../../assets/icons/${item['name']}.png`),
+                      scale: 3,
+                      fillColor: '#EB00FF',
+                      scaledSize: new google.maps.Size(34, 25),
+                    }}
+                    onClick={() => {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      click(index);
+                    }}
+                  >
+                    {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      infoIndex[index] ? (
+                        <InfoWindow>
+                          <span>{item['info']}</span>
+                        </InfoWindow>
+                      ) : null
+                    }
+                  </Marker>
+                );
+              }
+            } else if (viewButton[4] == true) {
+              if (item['type'] == 1) {
+                return (
+                  <Marker
+                    position={{ lat: item['lat'], lng: item['lng'] }}
+                    icon={{
+                      url: require(`../../assets/icons/${item['name']}.png`),
+                      scale: 3,
+                      fillColor: '#EB00FF',
+                      scaledSize: new google.maps.Size(34, 25),
+                    }}
+                    onClick={() => {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      click(index);
+                    }}
+                  >
+                    {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      infoIndex[index] ? (
+                        <InfoWindow>
+                          <span>{item['info']}</span>
+                        </InfoWindow>
+                      ) : null
+                    }
+                  </Marker>
+                );
+              }
+            }
           })}
           <Polygon
             // Make the Polygon editable / draggable
@@ -556,30 +835,42 @@ const Main = () => {
         {buildingIndex[0] == true ? (
           <>
             <FloorText>층수</FloorText>
-            <FloorButton
-              active={floorButton[0]}
-              onClick={() => {
-                handleFloorClick(0);
-              }}
-            >
-              1
-            </FloorButton>
-            <FloorButton
-              active={floorButton[1]}
-              onClick={() => {
-                handleFloorClick(1);
-              }}
-            >
-              2
-            </FloorButton>
-            <FloorButton
-              active={floorButton[2]}
-              onClick={() => {
-                handleFloorClick(2);
-              }}
-            >
-              3
-            </FloorButton>
+            <ButtonWrapper>
+              <FloorButton
+                active={floorButton[0]}
+                onClick={() => {
+                  handleFloorClick(0);
+                }}
+              >
+                1
+              </FloorButton>
+              <InfoButton src={info} onClick={() => handleInfoButtonClick(0)} />
+              {availableShowInfoBox[0] ? InfoBox(1) : null}
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <FloorButton
+                active={floorButton[1]}
+                onClick={() => {
+                  handleFloorClick(1);
+                }}
+              >
+                2
+              </FloorButton>
+              <InfoButton src={info} onClick={() => handleInfoButtonClick(1)} />
+              {availableShowInfoBox[1] ? InfoBox(2) : null}
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <FloorButton
+                active={floorButton[2]}
+                onClick={() => {
+                  handleFloorClick(2);
+                }}
+              >
+                3
+              </FloorButton>
+              <InfoButton src={info} onClick={() => handleInfoButtonClick(2)} />
+              {availableShowInfoBox[3] ? InfoBox(2) : null}
+            </ButtonWrapper>
           </>
         ) : (
           <FixText>지원예정</FixText>

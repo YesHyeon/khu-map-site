@@ -5,8 +5,12 @@ import {
   NextButton,
   ButtonText,
   Introduce,
+  CenterWrapper,
+  Description,
 } from './Start.styles';
 import khuLogo from '../../assets/images/khuLogo.png';
+import logoText from '../../assets/images/logoText.png';
+import description from '../../assets/images/description.png';
 import { useNavigate } from 'react-router-dom';
 
 const Start = () => {
@@ -18,11 +22,11 @@ const Start = () => {
 
   return (
     <MainContainer>
-      <LogoImage src={khuLogo} />
-      <Introduce>
-        2023-1 디자인적사고 수업에서 개발한 <br />
-        경희대학교 국제캠퍼스 건물 지도입니다.
-      </Introduce>
+      <CenterWrapper>
+        <LogoImage src={khuLogo} />
+        <Introduce src={logoText} />
+        <Description src={description} />
+      </CenterWrapper>
       <NextButton>
         <ButtonText onClick={handleNextClick}>시작하기</ButtonText>
       </NextButton>
