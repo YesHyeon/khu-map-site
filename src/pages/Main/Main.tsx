@@ -663,7 +663,6 @@ const Main = () => {
           </>
         </ViewButtonWrapper>
       ) : null}
-
       <GoogleMapWrapper>
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -872,7 +871,12 @@ const Main = () => {
               {availableShowInfoBox[3] ? InfoBox(2) : null}
             </ButtonWrapper>
           </>
-        ) : (
+        ) : buildingIndex[0] == false &&
+          buildingIndex[1] == false &&
+          buildingIndex[2] == false &&
+          buildingIndex[3] == false &&
+          buildingIndex[4] == false &&
+          buildingIndex[5] == false ? null : (
           <FixText>지원예정</FixText>
         )}
       </FloorButtonWrapper>
