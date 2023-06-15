@@ -607,8 +607,8 @@ const Main = () => {
       <SelectorBoxWrapper>
         <BuildingWraaper>{getParticipant()}</BuildingWraaper>
       </SelectorBoxWrapper>
-      <ViewButtonWrapper>
-        {buildingIndex[0] == true ? (
+      {buildingIndex[0] == true ? (
+        <ViewButtonWrapper>
           <>
             <ButtonWrapper>
               <ViewButton
@@ -661,8 +661,9 @@ const Main = () => {
               </ViewButton>
             </ButtonWrapper>
           </>
-        ) : null}
-      </ViewButtonWrapper>
+        </ViewButtonWrapper>
+      ) : null}
+
       <GoogleMapWrapper>
         <GoogleMap
           mapContainerStyle={containerStyle}
