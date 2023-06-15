@@ -79,7 +79,7 @@ export const Building = styled.div<{ active: boolean }>`
 `;
 
 export const FloorButtonWrapper = styled.div`
-  width: 80px;
+  width: 100px;
   height: 150px;
   background-color: white
   border-radius: 10px;
@@ -91,7 +91,7 @@ export const FloorButtonWrapper = styled.div`
 
 export const FloorButton = styled.div<{ active: boolean }>`
   width: 100%;
-  height: calc(100% / 3);
+  height: 40px;
   background-color: ${(props: any) => (props.active ? 'pink' : 'white')};
   border-radius: 10px;
   display: flex;
@@ -126,7 +126,7 @@ export const FloorText = styled.div`
   background-color: 'white'
   border-radius: 10px;
   display: flex;
-  justify-content: center;
+  padding-left: 21px;
   align-items: center;
   font-size: 20px;
   font-weight: bold;
@@ -148,4 +148,17 @@ export const GoogleMapWrapper = styled.div`
   width: 100%;
   height: 100%;
   z-index: 1;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+export const InfoButton = styled.img`
+  height: 20px;
+  padding-left: 5px;
+  cursor: pointer;
 `;

@@ -13,6 +13,8 @@ import {
   CurrentButton,
   FloorText,
   FixText,
+  InfoButton,
+  ButtonWrapper,
 } from './Main.styles';
 
 import {
@@ -24,9 +26,12 @@ import {
   InfoWindow,
 } from '@react-google-maps/api';
 
+import InfoBox from '../../components/InfoBox/InfoBox';
+
 import useGeolocation from 'react-hook-geolocation';
 
 import locationImage from '../../assets/icons/locationImg.png';
+import info from '../../assets/icons/info.png';
 
 import eng from '../../assets/datas/eng2.json';
 
@@ -39,8 +44,19 @@ const Main = () => {
     { lat: 0, lng: 0, name: 101 },
   ]);
   const [a, setA] = useState<any>([{ lat: 0, lng: 0 }]);
+  const [availableShowInfoBox, SetAvailableShowInfoBox] = useState([
+    false,
+    false,
+    false,
+  ]);
 
   const [infoIndex, setInfoIndex] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -316,6 +332,7 @@ const Main = () => {
         setCurrentBuildingn('공과대학');
         setMapLocation(testData['공과대학'].location);
         setCurrentMarker(eng['공과대학'].roomposition[0][1]);
+        SetAvailableShowInfoBox([false, false, false]);
       } else if (text === '전자정보대학') {
         setCurrentBuildingn('전자정보대학');
         setMapLocation(testData['전자정보대학'].location);
@@ -439,6 +456,8 @@ const Main = () => {
 
   const handleFloorClick = useCallback(
     (floor: number) => {
+      SetAvailableShowInfoBox([false, false, false]);
+
       if (floor == 0) {
         setCurrentMarker(eng['공과대학'].roomposition[0][1]);
         setFloorButton((prev) =>
@@ -462,6 +481,18 @@ const Main = () => {
       }
     },
     [currentMarker, floorButton]
+  );
+
+  const handleInfoButtonClick = useCallback(
+    (index: number) => {
+      SetAvailableShowInfoBox((prev) =>
+        prev.map((v, i) => {
+          console.log(i);
+          return index === i ? !v : false;
+        })
+      );
+    },
+    [availableShowInfoBox]
   );
 
   const locationButton = document.createElement('button');
@@ -556,30 +587,42 @@ const Main = () => {
         {buildingIndex[0] == true ? (
           <>
             <FloorText>층수</FloorText>
-            <FloorButton
-              active={floorButton[0]}
-              onClick={() => {
-                handleFloorClick(0);
-              }}
-            >
-              1
-            </FloorButton>
-            <FloorButton
-              active={floorButton[1]}
-              onClick={() => {
-                handleFloorClick(1);
-              }}
-            >
-              2
-            </FloorButton>
-            <FloorButton
-              active={floorButton[2]}
-              onClick={() => {
-                handleFloorClick(2);
-              }}
-            >
-              3
-            </FloorButton>
+            <ButtonWrapper>
+              <FloorButton
+                active={floorButton[0]}
+                onClick={() => {
+                  handleFloorClick(0);
+                }}
+              >
+                1
+              </FloorButton>
+              <InfoButton src={info} onClick={() => handleInfoButtonClick(0)} />
+              {availableShowInfoBox[0] ? InfoBox(1) : null}
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <FloorButton
+                active={floorButton[1]}
+                onClick={() => {
+                  handleFloorClick(1);
+                }}
+              >
+                2
+              </FloorButton>
+              <InfoButton src={info} onClick={() => handleInfoButtonClick(1)} />
+              {availableShowInfoBox[1] ? InfoBox(2) : null}
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <FloorButton
+                active={floorButton[2]}
+                onClick={() => {
+                  handleFloorClick(2);
+                }}
+              >
+                3
+              </FloorButton>
+              <InfoButton src={info} onClick={() => handleInfoButtonClick(2)} />
+              {availableShowInfoBox[3] ? InfoBox(2) : null}
+            </ButtonWrapper>
           </>
         ) : (
           <FixText>지원예정</FixText>
