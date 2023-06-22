@@ -12,7 +12,10 @@ https://khubmap.vercel.app
 - Styled.component
 - Vercel
 
-<img width="250" alt="image" src="https://github.com/YesHyeon/khu-map-site/assets/81014501/d7dd91ff-866b-4295-b87a-7b897bc526d7">
+<img width="300" alt="image" src="https://github.com/YesHyeon/khu-map-site/assets/81014501/71ba36af-95ff-4d7f-b868-2488de8464e2">
 
-<img width="258" alt="image" src="https://github.com/YesHyeon/khu-map-site/assets/81014501/9b6e3229-eea4-4023-b14d-d00dc707fea7">
+
+<img width="300" alt="image" src="https://github.com/YesHyeon/khu-map-site/assets/81014501/ed444bf9-c489-4d92-bac1-685bee3cace3">
+
+<img width="300" alt="image" src="https://github.com/YesHyeon/khu-map-site/assets/81014501/a5d4c37c-1720-4250-b9f3-234a4b282ff8">
 
